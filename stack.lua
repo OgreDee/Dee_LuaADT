@@ -36,7 +36,7 @@ function stack.create()
 
     local __index = function(i_t, key)
         if key == "len" then
-            return lenght
+            return #data
         else
             return nil
         end
@@ -56,6 +56,7 @@ function stack.create()
         push = push,
         pop = pop,
         peek = peek,
+        clear = clear
     }
 
     setmetatable(t, mt)

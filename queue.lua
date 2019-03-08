@@ -39,7 +39,12 @@ function queue.create()
     end
 
     local __tostring = function()
-        return table.concat(data, ",")
+        print(#data)
+        local tmp = {}
+        for i=1,lenght do
+            tmp[i] = data[i + first - 1]
+        end
+        return table.concat(tmp, ",")
     end
 
     local __index = function(i_t, key)

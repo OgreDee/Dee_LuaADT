@@ -27,9 +27,9 @@ function list.create()
     ---@return node
     local find = function(value)
         local ret = nil
-        local nextnode = first
-        while not nextNode do
-            nextNode = nextNode.nextNode
+        local nextNode = first
+        while nextNode do
+            nextNode = nextNode.next
             if nextNode.value == value then
                 ret = nextNode
                 break
@@ -90,7 +90,7 @@ function list.create()
         assert(node)
 
         local frontNode = node.front
-        local nextNode = node.nextNode
+        local nextNode = node.next
 
         if frontNode == nil then
             first = nextNode
@@ -108,7 +108,7 @@ function list.create()
     ---@param v
     local remove = function(v)
         local node = find(v)
-        if not node then
+        if node then
             removeNode(node)
         end
     end
@@ -134,7 +134,7 @@ function list.create()
         __tostring = function()
             local ret = {}
             local next = first.next
-            while next ~= last do
+            while next and next ~= last do
                 ret[#ret+1] = next.value
                 next = next.next
             end
