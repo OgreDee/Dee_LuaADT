@@ -156,36 +156,36 @@ FIFO,先进先出，因为是队首删除所以不能使用table.remove
   * clear 	--清空
 #### eg.
 ```lua
-	local queue = require("queue")
-	-- lua table
-	local cnt = 10000 * 1
+local queue = require("queue")
+-- lua table
+local cnt = 10000 * 1
 
-	local t = {}
-	for i=1,cnt do
-	t[i] = i
-	end
+local t = {}
+for i=1,cnt do
+t[i] = i
+end
 
-	local time = os.clock()
-	while #t > 0 do
-	-- table.remove(t)
-		table.remove(t, 1)
-	end
-	print(os.clock() - time)
-	---1.037s
+local time = os.clock()
+while #t > 0 do
+-- table.remove(t)
+	table.remove(t, 1)
+end
+print(os.clock() - time)
+---1.037s
 
-	local v = queue.create()
+local v = queue.create()
 
-	for i=1,cnt do
-		v.enqueue(i)
-	end
+for i=1,cnt do
+	v.enqueue(i)
+end
 
 
-	local time1 = os.clock()
-	while v.len > 10 do
-		v.dequeue()
-	end
-	print(os.clock() - time1)
-	---0.005s
+local time1 = os.clock()
+while v.len > 10 do
+	v.dequeue()
+end
+print(os.clock() - time1)
+---0.005s
 ```
 1w条数据，lua table直接删除表头的耗时1.037s，queue耗时0.005s,而且queue整理内存的步长可以调整，耗时可以进步一提高.
 	
