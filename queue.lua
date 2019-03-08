@@ -35,11 +35,22 @@ function queue.create()
         data[first] = nil
         first = first+1
         lenght = lenght - 1
+
+        if math.fmod(first, 1000) == 0 then
+            local tmp = {}
+            table.move(data, first, first + lenght, 1, tmp)
+
+            first = 1
+            data = nil
+            data = tmp
+        end
+
         return ret
     end
 
     local __tostring = function()
         print(#data)
+
         local tmp = {}
         for i=1,lenght do
             tmp[i] = data[i + first - 1]
