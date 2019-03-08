@@ -34,9 +34,9 @@
   print(#t) -- 2
 ```
 #### 方法：
-  * add --尾添加(高效的操作)
-  * insert --插入(会有内存整理)
-  * addRange --尾添加一个表,
+  * add 	--尾添加(高效的操作)
+  * insert 	--插入(会有内存整理)
+  * addRange 	--尾添加一个表,
   * removeAt
   * remove
   * removeAll
@@ -80,13 +80,13 @@
 弥补动态数组增删的不足，提供增删效率，但是遍历和修改效率比较低
 
 #### 方法：
-  * addFirst --头添加
-  * addLast --尾添加
-  * addBefore --node前添加
-  * addAfter  --node后添加
-  * removeNode --删除node
-  * remove --根据值移除
-  * find --查找node
+  * addFirst 	--头添加
+  * addLast 	--尾添加
+  * addBefore 	--node前添加
+  * addAfter  	--node后添加
+  * removeNode 	--删除node
+  * remove 	--根据值移除
+  * find 	--查找node
 #### eg.
 ```lua
   local vector = require("list")
@@ -150,10 +150,10 @@ FILO先进后出, 对修改关闭，关闭遍历，只能通过方法修改数�
 ### 队列(queue)
 FIFO,先进先出，因为是队首删除所以不能使用table.remove
 #### 方法：
-  * enqueue  --添加
-  * dequeue   --移除
-  * peek  --返回栈顶数据
-  * clear --清空
+  * enqueue  	--添加
+  * dequeue   	--移除
+  * peek  	--返回栈顶数据
+  * clear 	--清空
 #### eg.
 ```lua
 	local queue = require("queue")
