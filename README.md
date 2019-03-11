@@ -2,6 +2,16 @@
 封装的lua数据结构, 元组(tuple)、动态数组(vector)、双向链表(list)、队列(queue)、栈(stack)。
 纯lua方法封装，没有使用oop，延续lua的简洁的风格。封装的数据结构能安全使用，在语言层面过滤掉非法操作，使其使用更加简单高效。
 
+所有的类型都支持#获取长度.
+> eg.
+```lua
+	local tuple = require("tuple")
+  local v = tuple.create({2,3,6})
+	print(#v)
+	---3
+```
+ 
+
 ### 元组(tuple)
 需要用table的动态数组初始化(不支持hashtable),只对外公开遍历，修改关闭。
 
