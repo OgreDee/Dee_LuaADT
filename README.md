@@ -6,7 +6,7 @@
 > eg.
 ```lua
 	local tuple = require("tuple")
-  local v = tuple.create({2,3,6})
+	local v = tuple.create({2,3,6})
 	print(#v)
 	---3
 ```
