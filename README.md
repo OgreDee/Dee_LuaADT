@@ -1,5 +1,6 @@
 # Lua-ADT
-封装的lua数据结构, 元组(tuple)、动态数组(vector)、双向链表(list)、队列(queue)、栈(stack)
+封装的lua数据结构, 元组(tuple)、动态数组(vector)、双向链表(list)、队列(queue)、栈(stack)。
+纯lua方法封装，没有使用oop，延续lua的简洁的风格。封装的数据结构能安全使用，在语言层面过滤掉非法操作，使其使用更加简单高效。
 
 ### 元组(tuple)
 需要用table的动态数组初始化(不支持hashtable),只对外公开遍历，修改关闭。
@@ -34,9 +35,9 @@
   print(#t) -- 2
 ```
 #### 方法：
-  * add --尾添加(高效的操作)
-  * insert --插入(会有内存整理)
-  * addRange --尾添加一个表,
+  * add 	--尾添加(高效的操作)
+  * insert 	--插入(会有内存整理)
+  * addRange 	--尾添加一个表,
   * removeAt
   * remove
   * removeAll
@@ -80,13 +81,13 @@
 弥补动态数组增删的不足，提供增删效率，但是遍历和修改效率比较低
 
 #### 方法：
-  * addFirst --头添加
-  * addLast --尾添加
-  * addBefore --node前添加
-  * addAfter  --node后添加
-  * removeNode --删除node
-  * remove --根据值移除
-  * find --查找node
+  * addFirst 	--头添加
+  * addLast 	--尾添加
+  * addBefore 	--node前添加
+  * addAfter  	--node后添加
+  * removeNode 	--删除node
+  * remove 	--根据值移除
+  * find 	--查找node
 #### eg.
 ```lua
   local vector = require("list")
@@ -149,3 +150,43 @@ FILO先进后出, 对修改关闭，关闭遍历，只能通过方法修改数�
 ```
 ### 队列(queue)
 FIFO,先进先出，因为是队首删除所以不能使用table.remove
+#### 方法：
+  * enqueue  	--添加
+  * dequeue   	--移除
+  * peek  	--返回栈顶数据
+  * clear 	--清空
+#### eg.
+```lua
+local queue = require("queue")
+-- lua table
+local cnt = 10000 * 1
+
+local t = {}
+for i=1,cnt do
+t[i] = i
+end
+
+local time = os.clock()
+while #t > 0 do
+-- table.remove(t)
+	table.remove(t, 1)
+end
+print(os.clock() - time)
+---1.037s
+
+local v = queue.create()
+
+for i=1,cnt do
+	v.enqueue(i)
+end
+
+
+local time1 = os.clock()
+while v.len > 10 do
+	v.dequeue()
+end
+print(os.clock() - time1)
+---0.005s
+```
+1w条数据，lua table直接删除表头的耗时1.037s，queue耗时0.005s,而且queue整理内存的步长可以调整，耗时可以进步一提高.
+	
