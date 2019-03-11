@@ -35,11 +35,11 @@ function stack.create()
     end
 
     local __index = function(i_t, key)
-        if key == "len" then
-            return #data
-        else
-            return nil
-        end
+        error(">> Dee: Limited access")
+    end
+
+    local __len = function()
+        return #data
     end
 
     local __newindex = function(i_t, key, v)
@@ -50,7 +50,7 @@ function stack.create()
         error(">> Dee: Limited access")
     end
 
-    local mt = {__tostring = __tostring, __index = __index, __newindex = __newindex, __ipairs = __ipairs, __pairs = __ipairs}
+    local mt = {__tostring = __tostring, __index = __index, __newindex = __newindex, __ipairs = __ipairs, __pairs = __ipairs, __len = __len}
 
     local t = {
         push = push,

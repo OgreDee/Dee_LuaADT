@@ -103,6 +103,9 @@ function vector.create()
         end,
         __tostring = function()
             return table.concat(data, ',')
+        end,
+        __len = function(v)
+            return #data
         end
     }
 

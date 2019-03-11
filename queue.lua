@@ -49,8 +49,6 @@ function queue.create()
     end
 
     local __tostring = function()
-        print(#data)
-
         local tmp = {}
         for i=1,lenght do
             tmp[i] = data[i + first - 1]
@@ -58,12 +56,12 @@ function queue.create()
         return table.concat(tmp, ",")
     end
 
+    local __len = function()
+        return lenght
+    end
+
     local __index = function(i_t, key)
-        if key == "len" then
-            return lenght
-        else
-            return nil
-        end
+        error(">> Dee: Limited access")
     end
 
     local __newindex = function(i_t, key, v)
@@ -74,7 +72,7 @@ function queue.create()
         error(">> Dee: Limited access")
     end
 
-    local mt = {__tostring = __tostring, __index = __index, __newindex = __newindex, __ipairs = __ipairs, __pairs = __ipairs}
+    local mt = {__tostring = __tostring, __index = __index, __newindex = __newindex, __ipairs = __ipairs, __pairs = __ipairs, __len = __len}
 
     local t = {
         enqueue = enqueue,

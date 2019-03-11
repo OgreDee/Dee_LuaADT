@@ -22,11 +22,7 @@ function tuple.create(i_data)
     end
 
     local __index = function(i_t, key)
-        if key == "len" then
-            return #data
-        else
-            return nil
-        end
+        return data[key]
     end
 
     local __newindex = function(i_t, key, v)
@@ -49,7 +45,11 @@ function tuple.create(i_data)
     	return iter
     end
 
-    local mt = {__tostring = __tostring, __index = __index, __newindex = __newindex, __pairs =__pairs, __ipairs = __ipairs}
+    local __len = function(v)
+        return #data
+    end
+
+    local mt = {__tostring = __tostring, __index = __index, __newindex = __newindex, __pairs =__pairs, __ipairs = __ipairs, __len = __len}
 
     setmetatable(t, mt)
 
