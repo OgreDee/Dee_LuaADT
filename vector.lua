@@ -10,9 +10,14 @@ vector = vector or {}
 function vector.create()
     local data = {}
 
+    ---获取长度(已经重载了#运算符,但是ulua是5.1确实__len)
+    local len = function()
+        return #data
+    end
 
     ---尾添加元素(高效)
     local add = function(v)
+        assert(v)
         table.insert(data, v)
     end
 
@@ -81,7 +86,25 @@ function vector.create()
         table.sort(data, comparer)
     end
 
+    ---匹配
+    ---@param 匹配函数
+    ---@return idx,value
+    local find = function(matcher)
+        local _idx, _value = -1, nil
+        local cnt = len()
+        for i = 1, cnt do
+            if matcher(i, data[i]) then
+                _value = data[i]
+                _idx = i
+                break
+            end
+        end
+
+        return _idx, _value
+    end
+
     local t = {
+        len = len,
         add = add,
         insert = insert,
         addRange = addRange,
@@ -91,6 +114,7 @@ function vector.create()
         contains = contains,
         indexOf = indexOf,
         sort = sort,
+        find = find
     }
 
     local mt = {
@@ -106,6 +130,9 @@ function vector.create()
         end,
         __len = function(v)
             return #data
+        end,
+        __pairs = function(...)
+            error(">> Dee: Limited access")
         end
     }
 
