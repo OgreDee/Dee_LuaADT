@@ -49,20 +49,20 @@
   * addRange 	--尾添加一个表,
   * removeAt
   * remove
-  * removeAll
   * contains
   * indexOf
   * sort
+  * find
   
 #### eg.
 ```lua
   local vector = require("vector")
   local v = vector.create()
 
-  v.add(4)
-  v.add(5)
-  v.add(6)
-  v.add(7)
+  v:add(4)
+  v:add(5)
+  v:add(6)
+  v:add(7)
   
   for i,v in ipairs(v) do
 	  print(i,v)
