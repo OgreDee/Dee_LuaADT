@@ -8,93 +8,90 @@
 vector = vector or {}
 
 function vector.create()
-    local data = {}
+    local t = {}
 
-    ---获取长度(已经重载了#运算符,但是ulua是5.1确实__len)
-    local len = function()
-        return #data
-    end
 
     ---尾添加元素(高效)
-    local add = function(v)
-        assert(v)
-        table.insert(data, v)
+    function t:add(v)
+        rawset(self, #self + 1, v)
     end
 
     ---插入(低效)
-    local insert = function(idx, v)
-        assert(idx > 0 and idx <= #data, "outrange of vector")
-        table.insert(data, idx, v)
-    end
+    ---@param k 位置
+    ---@param v 值
+    function t:insert(k, v)
+        assert(k > 0 and k <= #self, "outrange of vector")
 
-    ---尾添加数组(高效)
-    local addRange = function(t)
-        assert(type(t) == "table")
-
-        table.move(t,1, #t, #data+1, data )
-    end
-
-    ---是否存在某元素
-    local contains = function (v)
-        local ret = false
-        for i, v in ipairs(data) do
-            if v == i_v then
-                ret = true
-                break
-            end
+        local cnt = #self
+        for i = cnt, k, -1 do
+            rawset(self, i+1, self[i])
         end
 
-        return ret
+        rawset(self, k, v)
     end
 
     ---值的索引
-    local indexOf = function(i_v)
+    ---@return -1不存在
+    function t:indexOf(i_v)
+        assert(type(self) == 'table')
+
         local ret = -1
-        for i, v in ipairs(data) do
-            if v == i_v then
+        local cnt = #self
+        for i = 1, #self do
+            if self[i] == i_v then
                 ret = i
-                break
             end
         end
 
         return ret
     end
 
+    ---是否存在某元素
+    function t:contains(v)
+        assert(type(self) == 'table')
+        return self:indexOf(v) ~= -1
+    end
+
     ---根据下标索引移除元素(低效)
-    local removeAt = function(idx)
-        assert(idx <= #data)
-        table.remove(data, idx)
+    function t:removeAt(idx)
+        assert(idx <= #self)
+        table.remove(self, idx)
     end
 
     ---删除值(非贪婪)
-    local remove = function(v)
-        local ret = indexOf(v)
+    ---@return 删除位置 -1未删除
+    function t:remove(v)
+        local ret = self:indexOf(v)
         if ret ~= -1 then
-            removeAt(ret)
+            self:removeAt(ret)
         end
 
         return ret
     end
 
     ---删除所有值
-    local removeAll = function(v)
-
+    function t:removeAll(v)
+        assert(type(self) == 'table')
+        error(">>Dee: wait ...")
     end
 
     ---排序
-    local sort = function(comparer)
-        table.sort(data, comparer)
+    function t:sort(comparer)
+        assert(type(self) == 'table')
+        table.sort(self, comparer)
     end
 
     ---匹配
     ---@param 匹配函数
     ---@return idx,value
-    local find = function(matcher)
+    function t:find(matcher)
+        assert(type(self) == 'table')
+
         local _idx, _value = -1, nil
-        local cnt = len()
+        local cnt = #self
         for i = 1, cnt do
-            if matcher(i, data[i]) then
-                _value = data[i]
+            if matcher(i, self[i]) then
+                _value = self[i]
                 _idx = i
                 break
             end
@@ -103,40 +100,21 @@ function vector.create()
         return _idx, _value
     end
 
-    local t = {
-        len = len,
-        add = add,
-        insert = insert,
-        addRange = addRange,
-        removeAt = removeAt,
-        remove = remove,
-        removeAll = removeAll,
-        contains = contains,
-        indexOf = indexOf,
-        sort = sort,
-        find = find
-    }
+    --------------------------------metatable---------------------------------------
+    t.__newindex = function(i_t,k,v)
+        error(">> Dee: [], replace with add()")
+    end
 
-    local mt = {
-        __index = function(t,k)
-            return data[k]
-        end,
-        __newindex = function(t,k,v)
-            assert(k > 0 and k <= #data, "outrange of vector")
-            data[k] = v
-        end,
-        __tostring = function()
-            return table.concat(data, ',')
-        end,
-        __len = function(v)
-            return #data
-        end,
-        __pairs = function(...)
-            error(">> Dee: Limited access")
-        end
-    }
+    t.__tostring = function(i_t)
+        return table.concat(i_t, ',')
+    end
 
-    setmetatable(t, mt)
+    t.__pairs = function(...)
+        error(">> Dee: Limited access")
+    end
+
+    setmetatable(t, t)
+    -----------------------------------------------------------------------
 
     return t
 end
