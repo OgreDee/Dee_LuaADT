@@ -164,6 +164,7 @@ FIFO,先进先出，因为是队首删除所以不能使用table.remove
   * dequeue   	--移除
   * peek  	--返回栈顶数据
   * clear 	--清空
+  * #queue 	--获取长度
 #### eg.
 ```lua
 local queue = require("queue")
