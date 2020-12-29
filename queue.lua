@@ -7,6 +7,7 @@
 
 queue = queue or {}
 
+---@return Queue
 function queue.create()
     ---数据容器
     local data = {}
@@ -48,6 +49,12 @@ function queue.create()
         return ret
     end
 
+    local clear = function()
+        data = {}
+        first = 1
+        lenght = 0
+    end
+
     local __tostring = function()
         local tmp = {}
         for i=1,lenght do
@@ -68,16 +75,30 @@ function queue.create()
         error(">> Dee: Limited access")
     end
 
-    local __ipairs = function()
+    local __ipairs = function(i_t)
+        local idx = 0
+        local function iter(i_t)
+            idx = idx + 1
+            if idx <= lenght then
+                return idx, data[first + idx - 1]
+            end
+        end
+
+        return iter
+    end
+
+    local __pairs = function(i_t)
         error(">> Dee: Limited access")
     end
 
-    local mt = {__tostring = __tostring, __index = __index, __newindex = __newindex, __ipairs = __ipairs, __pairs = __ipairs, __len = __len}
+    local mt = {__tostring = __tostring, __index = __index, __newindex = __newindex, __ipairs = __ipairs, __pairs = __pairs, __len = __len}
 
+    ---@class Queue
     local t = {
         enqueue = enqueue,
         dequeue = dequeue,
-        peek = peek
+        peek = peek,
+        clear = clear
     }
 
     setmetatable(t, mt)
