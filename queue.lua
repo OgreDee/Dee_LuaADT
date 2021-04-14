@@ -24,8 +24,9 @@ function queue.create()
     ---压入数据
     local enqueue = function(v)
         assert(v ~= nil, "nil value")
+        first = lenght == 0 and 1 or first
         lenght = lenght + 1
-        table.insert(data, v)
+        table.insert(data, first+lenght-1, v)
     end
 
     ---弹出数据
@@ -36,8 +37,9 @@ function queue.create()
         data[first] = nil
         first = first+1
         lenght = lenght - 1
+        first = lenght == 0 and 1 or first
 
-        if math.fmod(first, 1000) == 0 then
+        if math.fmod(first, 4) == 0 then
             local tmp = {}
             table.move(data, first, first + lenght, 1, tmp)
 
