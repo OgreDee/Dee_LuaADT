@@ -4,21 +4,21 @@ stack = stack or {}
 function stack.create()
     local data = {}
 
-    function push(v)
+    local function push(v)
         assert(v)
         table.insert(data, v)
     end
 
-    function pop()
+    local function pop()
         assert(#data > 0)
         table.remove(data)
     end
 
-    function peek()
+    local function peek()
         return #data > 0 and data[#data] or nil
     end
 
-    function clear()
+    local function clear()
         for i=1,#data do
             data[i] = nil
         end
